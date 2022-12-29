@@ -1,0 +1,25 @@
+diff --git a/fastboot/fastboot.cpp b/fastboot/fastboot.cpp
+index f1b82e9fe..b9fbe1efa 100644
+diff --git a/fastboot/fastboot.cpp b/fastboot/fastboot.cpp
+index f1b82e9fe..b9fbe1efa 100644
+--- a/fastboot/fastboot.cpp
++++ b/fastboot/fastboot.cpp
+@@ -2159,6 +2159,20 @@ int FastBootTool::Main(int argc, char* argv[]) {
+                 do_flash(partition.c_str(), fname.c_str());
+             };
+             do_for_partitions(pname, slot_override, flash, true);
++        } else if (command == "cmd") {
++            std::string cmd = next_arg(&args);
++            fb->RawCommand(cmd);
++        } else if (command == "raw") {
++            std::string filename = next_arg(&args);
++            std::vector<char> buf;
++            ReadFileToVector(filename,&buf);
++            std::string cmd(buf.data(),buf.size ());
++            fb->RawCommand(cmd);
++        } else if (command == "rawdl") {
++            std::string filename = next_arg(&args);
++            std::vector<char> buf;
++            ReadFileToVector(filename,&buf);
++            fb->Download (buf);
+         } else if (command == "flash:raw") {
